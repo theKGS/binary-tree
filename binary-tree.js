@@ -140,7 +140,28 @@ class BinaryTree {
     }
 
     levelOrderForEach(callback) {
+        if (callback === null){
+            throw new Error("No callback function provided!");
+        }
 
+        let queue = [this.root];
+        let output = [];
+        while (true) {
+            if (queue.length === 0) {
+                return;
+            }
+
+            let p = queue.pop();
+            p.value = callback(p.value);
+
+            if (p.left !== null) {
+                queue.push(p.left);
+            }
+
+            if (p.right !== null) {
+                queue.push(p.right);
+            }
+        }
     }
 
     // Insert without balance considerations
