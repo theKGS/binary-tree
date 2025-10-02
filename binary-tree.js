@@ -8,8 +8,7 @@ class BinaryTree {
     static buildTree(array) {
         // Set() converts array to set which removes duplicates
         array = [...new Set(array)];
-        array.sort( (a, b) => {return a - b}); // to sort properly
-        console.log(array);
+        array.sort((a, b) => { return a - b }); // to sort properly
         return BinaryTree.recBuild(array);
     }
 
@@ -17,13 +16,10 @@ class BinaryTree {
         if (array.length === 0) {
             return null
         };
-
-        console.log("array " + array);
-
         const midIdx = Math.floor(array.length / 2);
         const midVal = array[midIdx];
         array.splice(midIdx, 1);
-        
+
         return new BNode(
             BinaryTree.recBuild(array.slice(0, midIdx)),
             BinaryTree.recBuild(array.slice(midIdx)),
@@ -33,11 +29,11 @@ class BinaryTree {
     depth(value) {
         let cnode = this.root;
         let steps = 0;
-        while(true) {
+        while (true) {
             if (cnode === null) {
                 return null;
             }
-            
+
             if (cnode.value === value) {
                 return steps;
             }
@@ -50,6 +46,80 @@ class BinaryTree {
 
             steps += 1;
         }
+    }
+
+    find(value) {
+        let cnode = this.root;
+        let steps = 0;
+        while (true) {
+            if (cnode === null) {
+                return null;
+            }
+
+            if (cnode.value === value) {
+                return cnode;
+            }
+
+            if (value < cnode.value) {
+                cnode = cnode.left;
+            } else {
+                cnode = cnode.right;
+            }
+        }
+    }
+
+    height(value) {
+        let startNode = this.find(value);
+        if (startNode === null) { return null };
+
+        let queue = [[0, startNode]];
+        let longest = 0;
+        while (true) {
+            if (queue.length === 0) {
+                return longest;
+            }
+
+            let h, p;
+            [h, p] = queue.pop();
+            longest = Math.max(longest, h);
+
+            if (p.left !== null) {
+                queue.splice(0, 0, [h + 1, p.left]);
+            }
+
+            if (p.right !== null) {
+                queue.splice(0, 0, [h + 1, p.right]);
+            }
+        }
+    }
+
+    values() {
+        let startNode = this.root;
+        let queue = [startNode];
+        let output = [];
+        while (true) {
+            if (queue.length === 0) {
+                return output;
+            }
+
+            let p = queue.pop();
+            output.push(p.value);
+
+            console.log(queue.length);
+
+            if (p.left !== null) {
+                queue.push(p.left);
+            }
+
+            if (p.right !== null) {
+                queue.push(p.right);
+            }
+        }
+    }
+
+    rebalance() {
+        const values = this.values();
+        this.root = BinaryTree.buildTree(values);
     }
 }
 
@@ -66,22 +136,19 @@ class BNode {
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
-  if (node === null) {
-    return;
-  }
-  if (node.right !== null) {
-    prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
-  }
-  console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
-  if (node.left !== null) {
-    prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
-  }
+    if (node === null) {
+        return;
+    }
+    if (node.right !== null) {
+        prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.value}`);
+    if (node.left !== null) {
+        prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
 };
 
+p = new BinaryTree([5, 3, 1, 2, 12]);
+console.log(p.inorder());
 
-b = new BinaryTree([1, 2, 3, 4, 51, 12, 5, 6, 7]);
-prettyPrint(b.root);
-console.log(b.depth(51));
-console.log(b.depth(12));
-console.log(b.depth(4));
-console.log(b.depth(69));
+module.exports = BinaryTree;
