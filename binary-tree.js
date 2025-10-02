@@ -140,17 +140,12 @@ class BinaryTree {
     }
 
     levelOrderForEach(callback) {
-        if (callback == null){
+        if (callback == null) {
             throw new Error("No callback function provided!");
         }
 
         let queue = [this.root];
-        let output = [];
-        while (true) {
-            if (queue.length === 0) {
-                return;
-            }
-
+        while (queue.length > 0) {
             let p = queue.pop();
             p.value = callback(p.value);
 
@@ -161,6 +156,25 @@ class BinaryTree {
             if (p.right !== null) {
                 queue.push(p.right);
             }
+        }
+    }
+
+    inOrderForEach(callback) {
+        if (callback == null) {
+            throw new Error("No callback function provided!");
+        }
+
+        let queue = [];
+        let cnode = this.root;
+        while (cnode !== null || queue.length > 0) {
+            while (cnode !== null) {
+                queue.push(cnode);
+                cnode = cnode.left;
+            }
+
+            cnode = queue.pop();
+            cnode.value = callback(cnode.value);
+            cnode = cnode.right;
         }
     }
 
@@ -213,11 +227,6 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 };
 
-//b = new BinaryTree([1]);
-//b.rawInsert(2);
-//b.rawInsert(3);
-//b.rawInsert(4);
-//b.rawInsert(5);
-//prettyPrint(b.root);
-//
+b = new BinaryTree([1, 2, 3, 4, 5]);
+b.inOrderForEach(() => { });
 module.exports = BinaryTree;
