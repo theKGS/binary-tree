@@ -140,7 +140,7 @@ class BinaryTree {
     }
 
     levelOrderForEach(callback) {
-        if (callback === null){
+        if (callback == null){
             throw new Error("No callback function provided!");
         }
 

@@ -45,3 +45,19 @@ test('test imbalanced tree', () => {
   expect(btree.depth(4)).toBe(3);
   expect(btree.depth(5)).toBe(4);
 });
+
+test('test level order traversal 1', () => {
+  let btree = new BinaryTree([1, 2, 3, 4]);
+  btree.levelOrderForEach((x) => {return x + 1})
+  expect(btree.find(2)).not.toBeNull();
+  expect(btree.find(3)).not.toBeNull();
+  expect(btree.find(4)).not.toBeNull();
+  expect(btree.find(5)).not.toBeNull();
+  expect(btree.find(1)).toBeNull();
+});
+
+test('test level order traversal 2', () => {
+  let btree = new BinaryTree([]);
+  // Wrapping necessary when using toThrow
+  expect(() => btree.levelOrderForEach()).toThrow();
+});
