@@ -1,8 +1,8 @@
 class BinaryTree {
-    #root;
+    root;
 
     constructor(arr) {
-
+        this.root = BinaryTree.buildTree(arr);
     }
 
     static buildTree(array) {
@@ -28,6 +28,28 @@ class BinaryTree {
             BinaryTree.recBuild(array.slice(0, midIdx)),
             BinaryTree.recBuild(array.slice(midIdx)),
             midVal);
+    }
+
+    height(value) {
+        let cnode = this.root;
+        let steps = 0;
+        while(true) {
+            if (cnode === null) {
+                return null;
+            }
+            
+            if (cnode.value === value) {
+                return steps;
+            }
+
+            if (value < cnode.value) {
+                cnode = cnode.left;
+            } else {
+                cnode = cnode.right;
+            }
+
+            steps += 1;
+        }
     }
 }
 
@@ -57,5 +79,9 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 };
 
 
-// b = BinaryTree.buildTree([1, 2, 3, 4, 51, 12, 5, 6, 7]);
-// prettyPrint(b);
+b = new BinaryTree([1, 2, 3, 4, 51, 12, 5, 6, 7]);
+prettyPrint(b.root);
+console.log(b.height(51));
+console.log(b.height(12));
+console.log(b.height(4));
+console.log(b.height(69));
