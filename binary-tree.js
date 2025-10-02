@@ -136,7 +136,34 @@ class BinaryTree {
             return Math.max(ls, rs) + 1;
         }
 
-        fhelper(this.root);
+        return fhelper(this.root) > 0;
+    }
+
+    levelOrderForEach(callback) {
+
+    }
+
+    // Insert without balance considerations
+    rawInsert(value) {
+        let cnode = this.root;
+        while (true) {
+            if (value < cnode.value) {
+                if (cnode.left === null) {
+                    cnode.left = new BNode(null, null, value);
+                    return;
+                } else {
+                    cnode = cnode.left;
+                }
+            }
+            if (value > cnode.value) {
+                if (cnode.right === null) {
+                    cnode.right = new BNode(null, null, value);
+                    return;
+                } else {
+                    cnode = cnode.right;
+                }
+            }
+        }
     }
 }
 
@@ -165,4 +192,11 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 };
 
+//b = new BinaryTree([1]);
+//b.rawInsert(2);
+//b.rawInsert(3);
+//b.rawInsert(4);
+//b.rawInsert(5);
+//prettyPrint(b.root);
+//
 module.exports = BinaryTree;
