@@ -30,7 +30,7 @@ class BinaryTree {
             midVal);
     }
 
-    height(value) {
+    depth(value) {
         let cnode = this.root;
         let steps = 0;
         while(true) {
@@ -81,7 +81,7 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
 
 b = new BinaryTree([1, 2, 3, 4, 51, 12, 5, 6, 7]);
 prettyPrint(b.root);
-console.log(b.height(51));
-console.log(b.height(12));
-console.log(b.height(4));
-console.log(b.height(69));
+console.log(b.depth(51));
+console.log(b.depth(12));
+console.log(b.depth(4));
+console.log(b.depth(69));
