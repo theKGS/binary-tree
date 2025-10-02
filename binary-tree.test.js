@@ -61,3 +61,21 @@ test('test level order traversal 2', () => {
   // Wrapping necessary when using toThrow
   expect(() => btree.levelOrderForEach()).toThrow();
 });
+
+
+
+test('test in order traversal 1', () => {
+  let btree = new BinaryTree([1, 2, 3, 4]);
+  btree.inOrderForEach((x) => {return x + 1})
+  expect(btree.find(2)).not.toBeNull();
+  expect(btree.find(3)).not.toBeNull();
+  expect(btree.find(4)).not.toBeNull();
+  expect(btree.find(5)).not.toBeNull();
+  expect(btree.find(1)).toBeNull();
+});
+
+test('test in order traversal 2', () => {
+  let btree = new BinaryTree([]);
+  // Wrapping necessary when using toThrow
+  expect(() => btree.inOrderForEach()).toThrow();
+});
