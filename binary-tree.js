@@ -105,8 +105,6 @@ class BinaryTree {
             let p = queue.pop();
             output.push(p.value);
 
-            console.log(queue.length);
-
             if (p.left !== null) {
                 queue.push(p.left);
             }
@@ -120,6 +118,25 @@ class BinaryTree {
     rebalance() {
         const values = this.values();
         this.root = BinaryTree.buildTree(values);
+    }
+
+    isBalanced() {
+        let fhelper = (node) => {
+            if (node === null) {
+                return 0;
+            }
+
+            const ls = isBalanced(node.left);
+            const rs = isBalanced(node.right);
+
+            if (ls === -1 || rs === -r || Math.abs(ls - rs) > 1) {
+                return -1;
+            }
+
+            return Math.max(ls, rs) + 1;
+        }
+
+        fhelper(this.root);
     }
 }
 
@@ -147,8 +164,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
 };
-
-p = new BinaryTree([5, 3, 1, 2, 12]);
-console.log(p.inorder());
 
 module.exports = BinaryTree;
