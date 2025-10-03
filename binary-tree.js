@@ -126,10 +126,10 @@ class BinaryTree {
                 return 0;
             }
 
-            const ls = isBalanced(node.left);
-            const rs = isBalanced(node.right);
+            const ls = fhelper(node.left);
+            const rs = fhelper(node.right);
 
-            if (ls === -1 || rs === -r || Math.abs(ls - rs) > 1) {
+            if (ls === -1 || rs === -1 || Math.abs(ls - rs) > 1) {
                 return -1;
             }
 
@@ -178,7 +178,6 @@ class BinaryTree {
         }
     }
 
-    // Insert without balance considerations
     insert(value) {
         let cnode = this.root;
         while (true) {
@@ -201,20 +200,27 @@ class BinaryTree {
         }
     }
 
-    // Delete without balance considerations
     delete(value) {
         if (this.root.value === value) {
             this.root = null;
             return;
         }
 
+        // Find the node to delete and the parent
         let parent = this.root;
+        let node = null;
         while (true) {
             if (parent === null) {
                 break;
             }
 
-            if (parent.right.value === value || parent.left.value === value) {
+            if (parent.right.value === value) {
+                node = parent.right;
+                break;
+            }
+
+            if (parent.left.value === value) {
+                node = parent.left;
                 break;
             }
 
@@ -223,6 +229,22 @@ class BinaryTree {
             } else {
                 parent = parent.right;
             }
+        }
+
+        // Delete leaf node
+        if (node.isLeaf()) {
+            if (parent.right === node) {
+                parent.right = null;
+            } else {
+                parent.left = null;
+            }
+            return;
+        }
+
+        // Delete node with single child
+        if (node.hasSingleChild()) {
+
+            return;
         }
     }
 
@@ -249,6 +271,27 @@ class BNode {
         this.right = right;
         this.left = left;
         this.value = val;
+    }
+
+    isLeaf() {
+        return (this.left === null && this.right === null);
+    }
+
+    hasSingleChild() {
+        return (this.left === null && this.right !== null) ||
+               (this.right === null && this.left !== null)
+    }
+
+    hasTwoChildren() {
+        return (this.left !== null && this.right !== null);
+    }
+
+    getSingleChild() {
+        if (this.left !== null) {
+            return this.left;
+        } else {
+            return this.right;
+        }
     }
 }
 

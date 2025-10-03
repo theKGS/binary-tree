@@ -34,7 +34,7 @@ test('test rebalance', () => {
   expect(btree.values().length).toBe(3);
 });
 
-test('test imbalanced tree', () => {
+test('test imbalanced tree 1', () => {
   let btree = new BinaryTree([1]);
   btree.insert(2);
   btree.insert(3);
@@ -48,6 +48,15 @@ test('test imbalanced tree', () => {
   expect(btree.depth(4)).toBe(3);
   expect(btree.depth(5)).toBe(4);
 });
+
+test('test imbalanced tree 2', () => {
+  let btree = new BinaryTree([1]);
+  expect(btree.isBalanced()).toBe(true);
+});
+
+
+
+
 
 test('test level order traversal 1', () => {
   let btree = new BinaryTree([1, 2, 3, 4]);
