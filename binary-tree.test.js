@@ -4,6 +4,9 @@ test('test 1', () => {
   let btree = new BinaryTree([1, 1, 1, 2, 3]);
   expect(btree.height(1)).toBe(0);
   expect(btree.depth(2)).toBe(0);
+  expect(btree.path([]).value).toBe(2);
+  expect(btree.path(['left']).value).toBe(1);
+  expect(btree.path(['right']).value).toBe(3);
 });
 
 test('test height 1', () => {
@@ -48,12 +51,12 @@ test('test imbalanced tree', () => {
 
 test('test level order traversal 1', () => {
   let btree = new BinaryTree([1, 2, 3, 4]);
-  btree.levelOrderForEach((x) => {return x + 1})
+  btree.levelOrderForEach((x) => {x.value = x.value + 1; return x});
   expect(btree.find(2)).not.toBeNull();
   expect(btree.find(3)).not.toBeNull();
   expect(btree.find(4)).not.toBeNull();
   expect(btree.find(5)).not.toBeNull();
-  expect(btree.find(1)).toBeNull();
+  expect(btree.find(0)).toBeNull();
 });
 
 test('test level order traversal 2', () => {
@@ -62,20 +65,31 @@ test('test level order traversal 2', () => {
   expect(() => btree.levelOrderForEach()).toThrow();
 });
 
-
-
 test('test in order traversal 1', () => {
   let btree = new BinaryTree([1, 2, 3, 4]);
-  btree.inOrderForEach((x) => {return x + 1})
+  btree.inOrderForEach((x) => {x.value = x.value + 1; return x});
   expect(btree.find(2)).not.toBeNull();
   expect(btree.find(3)).not.toBeNull();
   expect(btree.find(4)).not.toBeNull();
   expect(btree.find(5)).not.toBeNull();
-  expect(btree.find(1)).toBeNull();
+  expect(btree.find(0)).toBeNull();
 });
 
 test('test in order traversal 2', () => {
   let btree = new BinaryTree([]);
   // Wrapping necessary when using toThrow
   expect(() => btree.inOrderForEach()).toThrow();
+});
+
+test('test in order traversal 3', () => {
+  let btree = new BinaryTree([1, 2, 3]);
+  // Add the values of the left and right child to the value of each node
+  btree.inOrderForEach((x) => {
+    let rval = ((x.right !== null) ? x.right.value : 0);
+    let lval = ((x.left !== null) ? x.left.value : 0);
+    x.value += lval + rval; 
+    return x});
+  expect(btree.path(['left']).value).toBe(1);
+  expect(btree.path([]).value).toBe(6);
+  expect(btree.path(['right']).value).toBe(3);
 });
