@@ -147,14 +147,14 @@ class BinaryTree {
         let queue = [this.root];
         while (queue.length > 0) {
             let cnode = queue.pop();
-            p = callback(p);
+            cnode = callback(cnode);
 
             if (cnode.left !== null) {
-                queue.push(p.left);
+                queue.push(cnode.left);
             }
 
             if (cnode.right !== null) {
-                queue.push(p.right);
+                queue.push(cnode.right);
             }
         }
     }
