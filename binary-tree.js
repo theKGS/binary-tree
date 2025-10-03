@@ -200,6 +200,44 @@ class BinaryTree {
             }
         }
     }
+
+    // Delete without balance considerations
+    rawDelete(value) {
+        if (this.root.value === value) {
+            this.root = null;
+            return;
+        }
+
+        let parent = this.root;
+        while (true) {
+            if (parent === null) {
+                break;
+            }
+
+            if (parent.right.value === value || parent.left.value === value) {
+                break;
+            }
+
+            if (value < parent.value) {
+                parent = parent.left;
+            } else {
+                parent = parent.right;
+            }
+        }
+    }
+
+    /*
+        Returns the node at the position indicated by the
+        list of 'right' and 'left' elements in the list.
+    */
+    path(list) {
+        let cnode = this.root;
+        for (let i = 0; i < list.length; i++) {
+            cnode = (list[i] === 'left') ? cnode.left : cnode.right;
+        }
+
+        return cnode;
+    }
 }
 
 class BNode {
@@ -227,6 +265,4 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
     }
 };
 
-b = new BinaryTree([1, 2, 3, 4, 5]);
-b.inOrderForEach(() => { });
 module.exports = BinaryTree;
