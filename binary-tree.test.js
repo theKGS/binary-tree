@@ -36,10 +36,10 @@ test('test rebalance', () => {
 
 test('test imbalanced tree', () => {
   let btree = new BinaryTree([1]);
-  btree.rawInsert(2);
-  btree.rawInsert(3);
-  btree.rawInsert(4);
-  btree.rawInsert(5);
+  btree.insert(2);
+  btree.insert(3);
+  btree.insert(4);
+  btree.insert(5);
   expect(btree.height(1)).toBe(4);
   expect(btree.height(5)).toBe(0);
   expect(btree.depth(1)).toBe(0);

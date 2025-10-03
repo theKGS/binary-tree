@@ -179,7 +179,7 @@ class BinaryTree {
     }
 
     // Insert without balance considerations
-    rawInsert(value) {
+    insert(value) {
         let cnode = this.root;
         while (true) {
             if (value < cnode.value) {
@@ -202,7 +202,7 @@ class BinaryTree {
     }
 
     // Delete without balance considerations
-    rawDelete(value) {
+    delete(value) {
         if (this.root.value === value) {
             this.root = null;
             return;
