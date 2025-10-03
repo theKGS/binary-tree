@@ -146,14 +146,14 @@ class BinaryTree {
 
         let queue = [this.root];
         while (queue.length > 0) {
-            let p = queue.pop();
-            p.value = callback(p.value);
+            let cnode = queue.pop();
+            p = callback(p);
 
-            if (p.left !== null) {
+            if (cnode.left !== null) {
                 queue.push(p.left);
             }
 
-            if (p.right !== null) {
+            if (cnode.right !== null) {
                 queue.push(p.right);
             }
         }
@@ -173,7 +173,7 @@ class BinaryTree {
             }
 
             cnode = queue.pop();
-            cnode.value = callback(cnode.value);
+            cnode = callback(cnode);
             cnode = cnode.right;
         }
     }
