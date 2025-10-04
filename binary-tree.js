@@ -214,8 +214,6 @@ class BinaryTree {
         }
 
         const rechelper = (node) => {
-            console.log("heh");
-
             if (node.left !== null) {
                 rechelper(node.left);
             }
@@ -255,51 +253,53 @@ class BinaryTree {
     }
 
     delete(value) {
-        if (this.root.value === value) {
-            this.root = null;
-            return;
-        }
+        let parent = null;
+        let node = this.root;
 
-        // Find the node to delete and the parent
-        let parent = this.root;
-        let node = null;
-        while (true) {
-            if (parent === null) {
-                break;
-            }
-
-            if (parent.right.value === value) {
-                node = parent.right;
-                break;
-            }
-
-            if (parent.left.value === value) {
-                node = parent.left;
-                break;
-            }
-
-            if (value < parent.value) {
-                parent = parent.left;
+        while (node !== null && node.value !== value) {
+            parent = node;
+            if (value < node.value) {
+                node = node.left;
             } else {
-                parent = parent.right;
+                node = node.right;
             }
         }
 
-        // Delete leaf node
-        if (node.isLeaf()) {
-            if (parent.right === node) {
-                parent.right = null;
-            } else {
-                parent.left = null;
-            }
-            return;
-        }
+        if (node === null) {return;}
 
         // Delete node with single child
-        if (node.hasSingleChild()) {
+        if (node.left === null || node.right === null) {
+            let childNode = (node.left === null) ? node.right : node.left;
 
-            return;
+            if (parent === null) {
+                this.root = childNode;
+                return;
+            }
+
+            if (node === parent.left) {
+                parent.left = childNode;
+            } else {
+                parent.right = childNode;
+            }
+        } else {
+
+            let leftmost = node.right;
+            let lparent = null;
+            while (leftmost.left !== null) {
+                lparent = leftmost;
+                leftmost = leftmost.left;
+            }
+
+            if (lparent !== null) {
+                lparent.left = leftmost.right;
+            } else {
+                node.right = leftmost.right;
+            }
+
+            node.value = leftmost.value;
         }
+
+        return;
     }
 
     /*

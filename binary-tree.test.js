@@ -162,3 +162,39 @@ test('post order traversal basic', () => {
   btree.postOrderForEach((x) => { x.value = x.value + 1; return x });
   expect(btree.steplog).toStrictEqual([1, 3, 2, 5, 7, 6, 4]);
 });
+
+
+test('delete root with no children', () => {
+  let btree = new BinaryTree([1]);
+  btree.delete(1);
+  expect(btree.find(1)).toBeNull();
+});
+
+test('delete root with one left child', () => {
+  let btree = new BinaryTree([1, 2]);
+  btree.delete(2);
+  expect(btree.find(1)).not.toBeNull();
+  expect(btree.find(2)).toBeNull();
+});
+
+test('delete root with one right child', () => {
+  let btree = new BinaryTree([1]);
+  btree.insert(2)
+  btree.delete(1);
+  expect(btree.find(2)).not.toBeNull();
+  expect(btree.find(1)).toBeNull();
+});
+
+test('delete root with two children', () => {
+  let btree = new BinaryTree([1, 2, 3]);
+  btree.delete(2);
+  expect(btree.find(1)).not.toBeNull();
+  expect(btree.find(2)).toBeNull();
+  expect(btree.find(3)).not.toBeNull();
+});
+
+test('delete root with two children 2', () => {
+  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+  btree.delete(4);
+  expect(btree.find(4)).toBeNull();
+});
