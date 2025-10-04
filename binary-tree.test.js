@@ -1,6 +1,6 @@
 const BinaryTree = require('./binary-tree');
 
-test('test 1', () => {
+test('height and depth 1', () => {
   let btree = new BinaryTree([1, 1, 1, 2, 3]);
   expect(btree.height(1)).toBe(0);
   expect(btree.depth(2)).toBe(0);
@@ -9,7 +9,7 @@ test('test 1', () => {
   expect(btree.path(['right']).value).toBe(3);
 });
 
-test('test height 1', () => {
+test('height 1', () => {
   let btree = new BinaryTree([1, 2, 3]);
   expect(btree.height(1)).toBe(0);
   expect(btree.height(2)).toBe(1);
@@ -17,7 +17,7 @@ test('test height 1', () => {
   expect(btree.height(4)).toBe(null);
 });
 
-test('test depth 1', () => {
+test('depth 1', () => {
   let btree = new BinaryTree([1, 2, 3]);
   expect(btree.depth(1)).toBe(1);
   expect(btree.depth(2)).toBe(0);
@@ -25,7 +25,7 @@ test('test depth 1', () => {
   expect(btree.depth(4)).toBe(null)
 });
 
-test('test rebalance', () => {
+test('rebalance', () => {
   let btree = new BinaryTree([1, 2, 3]);
   btree.rebalance();
   expect(btree.find(1)).not.toBeNull();
@@ -34,7 +34,7 @@ test('test rebalance', () => {
   expect(btree.values().length).toBe(3);
 });
 
-test('test imbalanced tree 1', () => {
+test('imbalanced tree 1', () => {
   let btree = new BinaryTree([1]);
   btree.insert(2);
   btree.insert(3);
@@ -49,18 +49,20 @@ test('test imbalanced tree 1', () => {
   expect(btree.depth(5)).toBe(4);
 });
 
-test('test imbalanced tree 2', () => {
+test('imbalanced tree 2', () => {
   let btree = new BinaryTree([1]);
   expect(btree.isBalanced()).toBe(true);
+  btree.insert(2);
+  expect(btree.isBalanced()).toBe(true);
+  btree.insert(3);
+  expect(btree.isBalanced()).toBe(false);
+  btree.insert(4);
+  expect(btree.isBalanced()).toBe(false);
 });
 
-
-
-
-
-test('test level order traversal 1', () => {
+test('level order traversal 1', () => {
   let btree = new BinaryTree([1, 2, 3, 4]);
-  btree.levelOrderForEach((x) => {x.value = x.value + 1; return x});
+  btree.levelOrderForEach((x) => { x.value = x.value + 1; return x });
   expect(btree.find(2)).not.toBeNull();
   expect(btree.find(3)).not.toBeNull();
   expect(btree.find(4)).not.toBeNull();
@@ -68,15 +70,15 @@ test('test level order traversal 1', () => {
   expect(btree.find(0)).toBeNull();
 });
 
-test('test level order traversal 2', () => {
+test('level order traversal 2', () => {
   let btree = new BinaryTree([]);
   // Wrapping necessary when using toThrow
   expect(() => btree.levelOrderForEach()).toThrow();
 });
 
-test('test in order traversal 1', () => {
+test('in order traversal 1', () => {
   let btree = new BinaryTree([1, 2, 3, 4]);
-  btree.inOrderForEach((x) => {x.value = x.value + 1; return x});
+  btree.inOrderForEach((x) => { x.value = x.value + 1; return x });
   expect(btree.find(2)).not.toBeNull();
   expect(btree.find(3)).not.toBeNull();
   expect(btree.find(4)).not.toBeNull();
@@ -84,20 +86,51 @@ test('test in order traversal 1', () => {
   expect(btree.find(0)).toBeNull();
 });
 
-test('test in order traversal 2', () => {
+test('in order traversal 2', () => {
   let btree = new BinaryTree([]);
   // Wrapping necessary when using toThrow
   expect(() => btree.inOrderForEach()).toThrow();
 });
 
-test('test in order traversal 3', () => {
+test('in order traversal 3', () => {
   let btree = new BinaryTree([1, 2, 3]);
   // Add the values of the left and right child to the value of each node
   btree.inOrderForEach((x) => {
     let rval = ((x.right !== null) ? x.right.value : 0);
     let lval = ((x.left !== null) ? x.left.value : 0);
-    x.value += lval + rval; 
-    return x});
+    x.value += lval + rval;
+    return x
+  });
+  expect(btree.path(['left']).value).toBe(1);
+  expect(btree.path([]).value).toBe(6);
+  expect(btree.path(['right']).value).toBe(3);
+});
+
+
+
+test('pre order traversal 1', () => {
+  let btree = new BinaryTree([1, 2, 3]);
+  // Add the values of the left and right child to the value of each node
+  btree.preOrderForEach((x) => {
+    let rval = ((x.right !== null) ? x.right.value : 0);
+    let lval = ((x.left !== null) ? x.left.value : 0);
+    x.value += lval + rval;
+    return x
+  });
+  expect(btree.path(['left']).value).toBe(1);
+  expect(btree.path([]).value).toBe(6);
+  expect(btree.path(['right']).value).toBe(3);
+});
+
+test('pre order traversal 2', () => {
+  let btree = new BinaryTree([1, 2, 3]);
+  // Add the values of the left and right child to the value of each node
+  btree.preOrderForEach((x) => {
+    let rval = ((x.right !== null) ? x.right.value : 0);
+    let lval = ((x.left !== null) ? x.left.value : 0);
+    x.value += lval + rval;
+    return x
+  });
   expect(btree.path(['left']).value).toBe(1);
   expect(btree.path([]).value).toBe(6);
   expect(btree.path(['right']).value).toBe(3);
