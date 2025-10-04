@@ -68,6 +68,7 @@ test('level order traversal 1', () => {
   expect(btree.find(4)).not.toBeNull();
   expect(btree.find(5)).not.toBeNull();
   expect(btree.find(0)).toBeNull();
+  expect(btree.steplog).toStrictEqual([3, 2, 4, 1]);
 });
 
 test('level order traversal 2', () => {
@@ -104,9 +105,8 @@ test('in order traversal 3', () => {
   expect(btree.path(['left']).value).toBe(1);
   expect(btree.path([]).value).toBe(6);
   expect(btree.path(['right']).value).toBe(3);
+  expect(btree.steplog).toStrictEqual([1, 2, 3]);
 });
-
-
 
 test('pre order traversal 1', () => {
   let btree = new BinaryTree([1, 2, 3]);
@@ -120,6 +120,7 @@ test('pre order traversal 1', () => {
   expect(btree.path(['left']).value).toBe(1);
   expect(btree.path([]).value).toBe(6);
   expect(btree.path(['right']).value).toBe(3);
+  expect(btree.steplog).toStrictEqual([2, 1, 3]);
 });
 
 test('pre order traversal 2', () => {

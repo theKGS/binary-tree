@@ -1,8 +1,10 @@
 class BinaryTree {
     root;
+    steplog;
 
     constructor(arr) {
         this.root = BinaryTree.buildTree(arr);
+        this.steplog = [];
     }
 
     static buildTree(array) {
@@ -147,14 +149,15 @@ class BinaryTree {
         let queue = [this.root];
         while (queue.length > 0) {
             let cnode = queue.pop();
+            this.steplog.push(cnode.value);
             cnode = callback(cnode);
 
             if (cnode.left !== null) {
-                queue.push(cnode.left);
+                queue.unshift(cnode.left);
             }
 
             if (cnode.right !== null) {
-                queue.push(cnode.right);
+                queue.unshift(cnode.right);
             }
         }
     }
@@ -173,8 +176,53 @@ class BinaryTree {
             }
 
             cnode = queue.pop();
+            this.steplog.push(cnode.value);
             cnode = callback(cnode);
             cnode = cnode.right;
+        }
+    }
+
+    preOrderForEach(callback) {
+        if (callback == null) {
+            throw new Error("No callback function provided!");
+        }
+
+        let stack = [this.root];
+        let cnode = null;
+        while (stack.length > 0) {
+            cnode = stack.pop();
+            this.steplog.push(cnode.value);
+            cnode = callback(cnode);
+
+            if (cnode.right !== null) {
+                stack.push(cnode.right);
+            }
+
+            if (cnode.left !== null) {
+                stack.push(cnode.left);
+            }
+        }
+    }
+
+    postOrderForEach(callback) {
+        if (callback == null) {
+            throw new Error("No callback function provided!");
+        }
+
+        let stack = [this.root];
+        let cnode = null;
+        while (stack.length > 0) {
+            cnode = stack.pop();
+            this.steplog.push(cnode.value);
+            cnode = callback(cnode);
+
+            if (cnode.right !== null) {
+                stack.push(cnode.right);
+            }
+
+            if (cnode.left !== null) {
+                stack.push(cnode.left);
+            }
         }
     }
 
@@ -279,7 +327,7 @@ class BNode {
 
     hasSingleChild() {
         return (this.left === null && this.right !== null) ||
-               (this.right === null && this.left !== null)
+            (this.right === null && this.left !== null)
     }
 
     hasTwoChildren() {
@@ -307,5 +355,9 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
 };
+
+let b = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+prettyPrint(b.root);
+b.preOrderForEach((x) => {return x});
 
 module.exports = BinaryTree;
