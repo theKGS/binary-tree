@@ -136,3 +136,29 @@ test('pre order traversal 2', () => {
   expect(btree.path([]).value).toBe(6);
   expect(btree.path(['right']).value).toBe(3);
 });
+
+
+
+test('level order traversal basic', () => {
+  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+  btree.levelOrderForEach((x) => { x.value = x.value + 1; return x });
+  expect(btree.steplog).toStrictEqual([4, 2, 6, 1, 3, 5, 7]);
+});
+
+test('in order traversal basic', () => {
+  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+  btree.inOrderForEach((x) => { x.value = x.value + 1; return x });
+  expect(btree.steplog).toStrictEqual([1, 2, 3, 4, 5, 6, 7]);
+});
+
+test('pre order traversal basic', () => {
+  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+  btree.preOrderForEach((x) => { x.value = x.value + 1; return x });
+  expect(btree.steplog).toStrictEqual([4, 2, 1, 3, 6, 5, 7]);
+});
+
+test('post order traversal basic', () => {
+  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+  btree.postOrderForEach((x) => { x.value = x.value + 1; return x });
+  expect(btree.steplog).toStrictEqual([1, 3, 2, 5, 7, 6, 4]);
+});

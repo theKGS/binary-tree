@@ -142,6 +142,7 @@ class BinaryTree {
     }
 
     levelOrderForEach(callback) {
+        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -163,6 +164,7 @@ class BinaryTree {
     }
 
     inOrderForEach(callback) {
+        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -183,6 +185,7 @@ class BinaryTree {
     }
 
     preOrderForEach(callback) {
+        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -205,26 +208,29 @@ class BinaryTree {
     }
 
     postOrderForEach(callback) {
+        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
 
-        let stack = [this.root];
-        let cnode = null;
-        while (stack.length > 0) {
-            cnode = stack.pop();
-            this.steplog.push(cnode.value);
-            cnode = callback(cnode);
+        const rechelper = (node) => {
+            console.log("heh");
 
-            if (cnode.right !== null) {
-                stack.push(cnode.right);
+            if (node.left !== null) {
+                rechelper(node.left);
             }
 
-            if (cnode.left !== null) {
-                stack.push(cnode.left);
+            if (node.right !== null) {
+                rechelper(node.right);
             }
+
+            this.steplog.push(node.value);
+            node = callback(node);
         }
+
+        rechelper(this.root);
     }
+
 
     insert(value) {
         let cnode = this.root;
@@ -355,9 +361,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
 };
-
-let b = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
-prettyPrint(b.root);
-b.preOrderForEach((x) => {return x});
 
 module.exports = BinaryTree;
