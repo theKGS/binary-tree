@@ -1,10 +1,8 @@
 class BinaryTree {
     root;
-    steplog;
 
     constructor(arr) {
         this.root = BinaryTree.buildTree(arr);
-        this.steplog = [];
     }
 
     static buildTree(array) {
@@ -142,7 +140,6 @@ class BinaryTree {
     }
 
     levelOrderForEach(callback) {
-        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -150,7 +147,6 @@ class BinaryTree {
         let queue = [this.root];
         while (queue.length > 0) {
             let cnode = queue.pop();
-            this.steplog.push(cnode.value);
             cnode = callback(cnode);
 
             if (cnode.left !== null) {
@@ -164,7 +160,6 @@ class BinaryTree {
     }
 
     inOrderForEach(callback) {
-        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -178,14 +173,12 @@ class BinaryTree {
             }
 
             cnode = queue.pop();
-            this.steplog.push(cnode.value);
             cnode = callback(cnode);
             cnode = cnode.right;
         }
     }
 
     preOrderForEach(callback) {
-        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -194,7 +187,6 @@ class BinaryTree {
         let cnode = null;
         while (stack.length > 0) {
             cnode = stack.pop();
-            this.steplog.push(cnode.value);
             cnode = callback(cnode);
 
             if (cnode.right !== null) {
@@ -208,7 +200,6 @@ class BinaryTree {
     }
 
     postOrderForEach(callback) {
-        this.steplog = [];
         if (callback == null) {
             throw new Error("No callback function provided!");
         }
@@ -222,7 +213,6 @@ class BinaryTree {
                 rechelper(node.right);
             }
 
-            this.steplog.push(node.value);
             node = callback(node);
         }
 
@@ -361,5 +351,9 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
 };
+
+let btree = new BinaryTree([1, 2, 3, 4]);
+btree.levelOrderForEach(x => {return x});
+prettyPrint(btree.root);
 
 module.exports = BinaryTree;

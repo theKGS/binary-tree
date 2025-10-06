@@ -60,108 +60,97 @@ test('imbalanced tree 2', () => {
   expect(btree.isBalanced()).toBe(false);
 });
 
-test('level order traversal 1', () => {
+
+test('in order traversal basic', () => {
+  const mockAddOne = jest.fn(x => {
+    // clone is necessary to prevent mutation of the argument
+    let clone = structuredClone(x);
+    clone.value += 1; return clone
+  });
+
   let btree = new BinaryTree([1, 2, 3, 4]);
-  btree.levelOrderForEach((x) => { x.value = x.value + 1; return x });
-  expect(btree.find(2)).not.toBeNull();
-  expect(btree.find(3)).not.toBeNull();
-  expect(btree.find(4)).not.toBeNull();
-  expect(btree.find(5)).not.toBeNull();
-  expect(btree.find(0)).toBeNull();
-  expect(btree.steplog).toStrictEqual([3, 2, 4, 1]);
+  btree.inOrderForEach(mockAddOne);
+  expect(mockAddOne.mock.calls).toHaveLength(4);
+  expect(mockAddOne.mock.calls[0][0].value).toBe(1);
+  expect(mockAddOne.mock.calls[1][0].value).toBe(2);
+  expect(mockAddOne.mock.calls[2][0].value).toBe(3);
+  expect(mockAddOne.mock.calls[3][0].value).toBe(4);
 });
 
-test('level order traversal 2', () => {
+test('level order traversal basic', () => {
+  const mockAddOne = jest.fn(x => {
+    // clone is necessary to prevent mutation of the argument
+    let clone = structuredClone(x);
+    clone.value += 1; return clone
+  });
+
+  let btree = new BinaryTree([1, 2, 3, 4]);
+  btree.levelOrderForEach(mockAddOne);
+  expect(mockAddOne.mock.calls).toHaveLength(4);
+  expect(mockAddOne.mock.calls[0][0].value).toBe(3);
+  expect(mockAddOne.mock.calls[1][0].value).toBe(2);
+  expect(mockAddOne.mock.calls[2][0].value).toBe(4);
+  expect(mockAddOne.mock.calls[3][0].value).toBe(1);
+});
+
+test('pre order traversal basic', () => {
+  const mockAddOne = jest.fn(x => {
+    // clone is necessary to prevent mutation of the argument
+    let clone = structuredClone(x);
+    clone.value += 1; return clone
+  });
+
+  let btree = new BinaryTree([1, 2, 3, 4]);
+  btree.preOrderForEach(mockAddOne);
+  expect(mockAddOne.mock.calls).toHaveLength(4);
+  expect(mockAddOne.mock.calls[0][0].value).toBe(3);
+  expect(mockAddOne.mock.calls[1][0].value).toBe(2);
+  expect(mockAddOne.mock.calls[2][0].value).toBe(1);
+  expect(mockAddOne.mock.calls[3][0].value).toBe(4);
+});
+
+test('post order traversal basic', () => {
+  const mockAddOne = jest.fn(x => {
+    // clone is necessary to prevent mutation of the argument
+    let clone = structuredClone(x);
+    clone.value += 1; return clone
+  });
+
+  let btree = new BinaryTree([1, 2, 3, 4]);
+  btree.postOrderForEach(mockAddOne);
+  expect(mockAddOne.mock.calls).toHaveLength(4);
+  expect(mockAddOne.mock.calls[0][0].value).toBe(1);
+  expect(mockAddOne.mock.calls[1][0].value).toBe(2);
+  expect(mockAddOne.mock.calls[2][0].value).toBe(4);
+  expect(mockAddOne.mock.calls[3][0].value).toBe(3);
+});
+
+test('throw error: level order traversal', () => {
   let btree = new BinaryTree([]);
   // Wrapping necessary when using toThrow
   expect(() => btree.levelOrderForEach()).toThrow();
 });
 
-test('in order traversal 1', () => {
-  let btree = new BinaryTree([1, 2, 3, 4]);
-  btree.inOrderForEach((x) => { x.value = x.value + 1; return x });
-  expect(btree.find(2)).not.toBeNull();
-  expect(btree.find(3)).not.toBeNull();
-  expect(btree.find(4)).not.toBeNull();
-  expect(btree.find(5)).not.toBeNull();
-  expect(btree.find(0)).toBeNull();
-});
-
-test('in order traversal 2', () => {
+test('throw error: in order traversal', () => {
   let btree = new BinaryTree([]);
   // Wrapping necessary when using toThrow
   expect(() => btree.inOrderForEach()).toThrow();
 });
 
-test('in order traversal 3', () => {
-  let btree = new BinaryTree([1, 2, 3]);
-  // Add the values of the left and right child to the value of each node
-  btree.inOrderForEach((x) => {
-    let rval = ((x.right !== null) ? x.right.value : 0);
-    let lval = ((x.left !== null) ? x.left.value : 0);
-    x.value += lval + rval;
-    return x
-  });
-  expect(btree.path(['left']).value).toBe(1);
-  expect(btree.path([]).value).toBe(6);
-  expect(btree.path(['right']).value).toBe(3);
-  expect(btree.steplog).toStrictEqual([1, 2, 3]);
+test('throw error: pre order traversal', () => {
+  let btree = new BinaryTree([]);
+  // Wrapping necessary when using toThrow
+  expect(() => btree.preOrderForEach()).toThrow();
 });
 
-test('pre order traversal 1', () => {
-  let btree = new BinaryTree([1, 2, 3]);
-  // Add the values of the left and right child to the value of each node
-  btree.preOrderForEach((x) => {
-    let rval = ((x.right !== null) ? x.right.value : 0);
-    let lval = ((x.left !== null) ? x.left.value : 0);
-    x.value += lval + rval;
-    return x
-  });
-  expect(btree.path(['left']).value).toBe(1);
-  expect(btree.path([]).value).toBe(6);
-  expect(btree.path(['right']).value).toBe(3);
-  expect(btree.steplog).toStrictEqual([2, 1, 3]);
-});
-
-test('pre order traversal 2', () => {
-  let btree = new BinaryTree([1, 2, 3]);
-  // Add the values of the left and right child to the value of each node
-  btree.preOrderForEach((x) => {
-    let rval = ((x.right !== null) ? x.right.value : 0);
-    let lval = ((x.left !== null) ? x.left.value : 0);
-    x.value += lval + rval;
-    return x
-  });
-  expect(btree.path(['left']).value).toBe(1);
-  expect(btree.path([]).value).toBe(6);
-  expect(btree.path(['right']).value).toBe(3);
+test('throw error: post order traversal', () => {
+  let btree = new BinaryTree([]);
+  // Wrapping necessary when using toThrow
+  expect(() => btree.postOrderForEach()).toThrow();
 });
 
 
 
-test('level order traversal basic', () => {
-  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
-  btree.levelOrderForEach((x) => { x.value = x.value + 1; return x });
-  expect(btree.steplog).toStrictEqual([4, 2, 6, 1, 3, 5, 7]);
-});
-
-test('in order traversal basic', () => {
-  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
-  btree.inOrderForEach((x) => { x.value = x.value + 1; return x });
-  expect(btree.steplog).toStrictEqual([1, 2, 3, 4, 5, 6, 7]);
-});
-
-test('pre order traversal basic', () => {
-  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
-  btree.preOrderForEach((x) => { x.value = x.value + 1; return x });
-  expect(btree.steplog).toStrictEqual([4, 2, 1, 3, 6, 5, 7]);
-});
-
-test('post order traversal basic', () => {
-  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
-  btree.postOrderForEach((x) => { x.value = x.value + 1; return x });
-  expect(btree.steplog).toStrictEqual([1, 3, 2, 5, 7, 6, 4]);
-});
 
 
 test('delete root with no children', () => {
@@ -185,7 +174,7 @@ test('delete root with one right child', () => {
   expect(btree.find(1)).toBeNull();
 });
 
-test('delete root with two children', () => {
+test('delete root with two children 1', () => {
   let btree = new BinaryTree([1, 2, 3]);
   btree.delete(2);
   expect(btree.find(1)).not.toBeNull();
@@ -197,4 +186,17 @@ test('delete root with two children 2', () => {
   let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
   btree.delete(4);
   expect(btree.find(4)).toBeNull();
+});
+
+test('delete node not in tree', () => {
+  let btree = new BinaryTree([1]);
+  btree.delete(4);
+  expect(btree.find(1)).not.toBeNull();
+  expect(btree.find(4)).toBeNull();
+});
+
+test('delete node from empty tree', () => {
+  let btree = new BinaryTree([]);
+  btree.delete(1);
+  expect(btree.find(1)).toBeNull();
 });
