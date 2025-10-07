@@ -316,27 +316,6 @@ class BNode {
         this.left = left;
         this.value = val;
     }
-
-    isLeaf() {
-        return (this.left === null && this.right === null);
-    }
-
-    hasSingleChild() {
-        return (this.left === null && this.right !== null) ||
-            (this.right === null && this.left !== null)
-    }
-
-    hasTwoChildren() {
-        return (this.left !== null && this.right !== null);
-    }
-
-    getSingleChild() {
-        if (this.left !== null) {
-            return this.left;
-        } else {
-            return this.right;
-        }
-    }
 }
 
 const prettyPrint = (node, prefix = '', isLeft = true) => {
@@ -351,9 +330,5 @@ const prettyPrint = (node, prefix = '', isLeft = true) => {
         prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
     }
 };
-
-let btree = new BinaryTree([1, 2, 3, 4]);
-btree.levelOrderForEach(x => {return x});
-prettyPrint(btree.root);
 
 module.exports = BinaryTree;
