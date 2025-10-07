@@ -125,78 +125,83 @@ test('post order traversal basic', () => {
   expect(mockAddOne.mock.calls[3][0].value).toBe(3);
 });
 
-test('throw error: level order traversal', () => {
-  let btree = new BinaryTree([]);
-  // Wrapping necessary when using toThrow
-  expect(() => btree.levelOrderForEach()).toThrow();
+
+describe('throw errors correctly', (d) => {
+  test('throw error: level order traversal', () => {
+    let btree = new BinaryTree([]);
+    // Wrapping necessary when using toThrow
+    expect(() => btree.levelOrderForEach()).toThrow();
+  });
+
+  test('throw error: in order traversal', () => {
+    let btree = new BinaryTree([]);
+    // Wrapping necessary when using toThrow
+    expect(() => btree.inOrderForEach()).toThrow();
+  });
+
+  test('throw error: pre order traversal', () => {
+    let btree = new BinaryTree([]);
+    // Wrapping necessary when using toThrow
+    expect(() => btree.preOrderForEach()).toThrow();
+  });
+
+  test('throw error: post order traversal', () => {
+    let btree = new BinaryTree([]);
+    // Wrapping necessary when using toThrow
+    expect(() => btree.postOrderForEach()).toThrow();
+  })
+})
+
+
+
+describe('delete function', () => {
+  test('delete root with no children', () => {
+    let btree = new BinaryTree([1]);
+    btree.delete(1);
+    expect(btree.find(1)).toBeNull();
+  });
+
+  test('delete root with one left child', () => {
+    let btree = new BinaryTree([1, 2]);
+    btree.delete(2);
+    expect(btree.find(1)).not.toBeNull();
+    expect(btree.find(2)).toBeNull();
+  });
+
+  test('delete root with one right child', () => {
+    let btree = new BinaryTree([1]);
+    btree.insert(2)
+    btree.delete(1);
+    expect(btree.find(2)).not.toBeNull();
+    expect(btree.find(1)).toBeNull();
+  });
+
+  test('delete root with two children 1', () => {
+    let btree = new BinaryTree([1, 2, 3]);
+    btree.delete(2);
+    expect(btree.find(1)).not.toBeNull();
+    expect(btree.find(2)).toBeNull();
+    expect(btree.find(3)).not.toBeNull();
+  });
+
+  test('delete root with two children 2', () => {
+    let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
+    btree.delete(4);
+    expect(btree.find(4)).toBeNull();
+  });
+
+  test('delete node not in tree', () => {
+    let btree = new BinaryTree([1]);
+    btree.delete(4);
+    expect(btree.find(1)).not.toBeNull();
+    expect(btree.find(4)).toBeNull();
+  });
+
+  test('delete node from empty tree', () => {
+    let btree = new BinaryTree([]);
+    btree.delete(1);
+    expect(btree.find(1)).toBeNull();
+  });
 });
 
-test('throw error: in order traversal', () => {
-  let btree = new BinaryTree([]);
-  // Wrapping necessary when using toThrow
-  expect(() => btree.inOrderForEach()).toThrow();
-});
 
-test('throw error: pre order traversal', () => {
-  let btree = new BinaryTree([]);
-  // Wrapping necessary when using toThrow
-  expect(() => btree.preOrderForEach()).toThrow();
-});
-
-test('throw error: post order traversal', () => {
-  let btree = new BinaryTree([]);
-  // Wrapping necessary when using toThrow
-  expect(() => btree.postOrderForEach()).toThrow();
-});
-
-
-
-
-
-test('delete root with no children', () => {
-  let btree = new BinaryTree([1]);
-  btree.delete(1);
-  expect(btree.find(1)).toBeNull();
-});
-
-test('delete root with one left child', () => {
-  let btree = new BinaryTree([1, 2]);
-  btree.delete(2);
-  expect(btree.find(1)).not.toBeNull();
-  expect(btree.find(2)).toBeNull();
-});
-
-test('delete root with one right child', () => {
-  let btree = new BinaryTree([1]);
-  btree.insert(2)
-  btree.delete(1);
-  expect(btree.find(2)).not.toBeNull();
-  expect(btree.find(1)).toBeNull();
-});
-
-test('delete root with two children 1', () => {
-  let btree = new BinaryTree([1, 2, 3]);
-  btree.delete(2);
-  expect(btree.find(1)).not.toBeNull();
-  expect(btree.find(2)).toBeNull();
-  expect(btree.find(3)).not.toBeNull();
-});
-
-test('delete root with two children 2', () => {
-  let btree = new BinaryTree([1, 2, 3, 4, 5, 6, 7]);
-  btree.delete(4);
-  expect(btree.find(4)).toBeNull();
-});
-
-test('delete node not in tree', () => {
-  let btree = new BinaryTree([1]);
-  btree.delete(4);
-  expect(btree.find(1)).not.toBeNull();
-  expect(btree.find(4)).toBeNull();
-});
-
-test('delete node from empty tree', () => {
-  let btree = new BinaryTree([]);
-  btree.delete(1);
-  expect(btree.find(1)).toBeNull();
-});
